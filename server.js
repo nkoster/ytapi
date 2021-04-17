@@ -22,8 +22,8 @@
     const info = await ytdl.getInfo(vid)
     // console.log(info.formats[info.formats.length - 1].url)
     res.setHeader('Content-Type', 'application/json')
-    // const formats = info.player_response.streamingData.formats
-    const formats = info.formats
+    const formats = info.player_response.streamingData.formats
+    // const formats = info.formats
     console.log(formats[formats.length - 1].url)
     if (formats) {
       res.send(JSON.stringify({ 
