@@ -23,7 +23,7 @@
     res.setHeader('Content-Type', 'application/json')
     const formats = info.player_response.streamingData.formats
     res.send(JSON.stringify({ 
-      src: formats[formats.length - 1]
+      src: formats[formats.length - 1].url
     }))
   }
   
