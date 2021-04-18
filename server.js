@@ -16,6 +16,8 @@
     const videoUrl = 'https://www.youtube.com/watch?v=' + req.params.link
     
     let vid
+
+    let liveVideo = false
     
     res.setHeader('Content-Type', 'application/json')
 
@@ -30,28 +32,21 @@
     const info = await ytdl.getInfo(vid)
 
     if (info.formats[0].isLive) {
-      console.log('live video')
+      liveVideo = true
     }
 
-    info.formats
-    .filter(v => v.width ? false : true)
-    .map(v => {
-      console.log(parseInt(v.qualityLabel))
-    })
-
     const highestQuality = info.formats
-      .map(f => f.width ? f.width : 0)
+      .map(v => parseInt(v.qualityLabel) ? parseInt(v.qualityLabel) : 0)
       .reduce((a, b) => a > b ? a : b)
 
     const indexOfHighestQuality = info.formats
-      .map(f => f.width ? f.width : 0)
+      .map(v => parseInt(v.qualityLabel) ? parseInt(v.qualityLabel) : 0)
       .indexOf(highestQuality)
 
-    console.log(`video: ${req.params.link}, quality: ${highestQuality}`)
+    console.log(`video: ${req.params.link}, quality: ${highestQuality}p${liveVideo ? ', live video' : ''}`)
 
     res.send(JSON.stringify({ 
-      // src: info.formats[indexOfHighestQuality].url
-      info
+      src: info.formats[indexOfHighestQuality].url
     }))
 
   }
